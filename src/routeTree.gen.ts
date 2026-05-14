@@ -19,6 +19,7 @@ import { Route as AuthenticatedMaintenanceRouteImport } from './routes/_authenti
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCompaniesRouteImport } from './routes/_authenticated/companies'
 import { Route as AuthenticatedAssetsRouteImport } from './routes/_authenticated/assets'
+import { Route as AuthenticatedAiScoringRouteImport } from './routes/_authenticated/ai-scoring'
 import { Route as AuthenticatedCompaniesIdRouteImport } from './routes/_authenticated/companies.$id'
 import { Route as AuthenticatedAssetsIdRouteImport } from './routes/_authenticated/assets.$id'
 
@@ -72,6 +73,11 @@ const AuthenticatedAssetsRoute = AuthenticatedAssetsRouteImport.update({
   path: '/assets',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAiScoringRoute = AuthenticatedAiScoringRouteImport.update({
+  id: '/ai-scoring',
+  path: '/ai-scoring',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedCompaniesIdRoute =
   AuthenticatedCompaniesIdRouteImport.update({
     id: '/$id',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/ai-scoring': typeof AuthenticatedAiScoringRoute
   '/assets': typeof AuthenticatedAssetsRouteWithChildren
   '/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/ai-scoring': typeof AuthenticatedAiScoringRoute
   '/assets': typeof AuthenticatedAssetsRouteWithChildren
   '/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/ai-scoring': typeof AuthenticatedAiScoringRoute
   '/_authenticated/assets': typeof AuthenticatedAssetsRouteWithChildren
   '/_authenticated/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/ai-scoring'
     | '/assets'
     | '/companies'
     | '/dashboard'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/ai-scoring'
     | '/assets'
     | '/companies'
     | '/dashboard'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/signup'
+    | '/_authenticated/ai-scoring'
     | '/_authenticated/assets'
     | '/_authenticated/companies'
     | '/_authenticated/dashboard'
@@ -247,6 +259,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAssetsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/ai-scoring': {
+      id: '/_authenticated/ai-scoring'
+      path: '/ai-scoring'
+      fullPath: '/ai-scoring'
+      preLoaderRoute: typeof AuthenticatedAiScoringRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/companies/$id': {
       id: '/_authenticated/companies/$id'
       path: '/$id'
@@ -290,6 +309,7 @@ const AuthenticatedCompaniesRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAiScoringRoute: typeof AuthenticatedAiScoringRoute
   AuthenticatedAssetsRoute: typeof AuthenticatedAssetsRouteWithChildren
   AuthenticatedCompaniesRoute: typeof AuthenticatedCompaniesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -299,6 +319,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAiScoringRoute: AuthenticatedAiScoringRoute,
   AuthenticatedAssetsRoute: AuthenticatedAssetsRouteWithChildren,
   AuthenticatedCompaniesRoute: AuthenticatedCompaniesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
