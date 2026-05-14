@@ -13,6 +13,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPipelineRouteImport } from './routes/_authenticated/pipeline'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCompaniesRouteImport } from './routes/_authenticated/companies'
 import { Route as AuthenticatedCompaniesIdRouteImport } from './routes/_authenticated/companies.$id'
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedPipelineRoute = AuthenticatedPipelineRouteImport.update({
+  id: '/pipeline',
+  path: '/pipeline',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pipeline': typeof AuthenticatedPipelineRoute
   '/companies/$id': typeof AuthenticatedCompaniesIdRoute
 }
 export interface FileRoutesByTo {
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/pipeline': typeof AuthenticatedPipelineRoute
   '/companies/$id': typeof AuthenticatedCompaniesIdRoute
 }
 export interface FileRoutesById {
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/companies': typeof AuthenticatedCompaniesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/pipeline': typeof AuthenticatedPipelineRoute
   '/_authenticated/companies/$id': typeof AuthenticatedCompaniesIdRoute
 }
 export interface FileRouteTypes {
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/companies'
     | '/dashboard'
+    | '/pipeline'
     | '/companies/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/companies'
     | '/dashboard'
+    | '/pipeline'
     | '/companies/$id'
   id:
     | '__root__'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/companies'
     | '/_authenticated/dashboard'
+    | '/_authenticated/pipeline'
     | '/_authenticated/companies/$id'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +155,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/pipeline': {
+      id: '/_authenticated/pipeline'
+      path: '/pipeline'
+      fullPath: '/pipeline'
+      preLoaderRoute: typeof AuthenticatedPipelineRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
@@ -185,11 +204,13 @@ const AuthenticatedCompaniesRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedCompaniesRoute: typeof AuthenticatedCompaniesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedPipelineRoute: typeof AuthenticatedPipelineRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCompaniesRoute: AuthenticatedCompaniesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedPipelineRoute: AuthenticatedPipelineRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
